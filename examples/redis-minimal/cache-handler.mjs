@@ -1,9 +1,9 @@
 import { createClient } from "redis";
 import { PHASE_PRODUCTION_BUILD } from "next/constants.js";
-import { CacheHandler } from "@fortedigital/nextjs-cache-handler";
-import createLruHandler from "@fortedigital/nextjs-cache-handler/local-lru";
-import createRedisHandler from "@fortedigital/nextjs-cache-handler/redis-strings";
-import createCompositeHandler from "@fortedigital/nextjs-cache-handler/composite";
+import { CacheHandler } from "../../packages/nextjs-cache-handler/dist/handlers/cache-handler.js";
+import createLruHandler from "../../packages/nextjs-cache-handler/dist/handlers/local-lru.js";
+import createRedisHandler from "../../packages/nextjs-cache-handler/dist/handlers/redis-strings.js";
+import createCompositeHandler from "../../packages/nextjs-cache-handler/dist/handlers/composite.js";
 
 const isSingleConnectionModeEnabled = !!process.env.REDIS_SINGLE_CONNECTION;
 

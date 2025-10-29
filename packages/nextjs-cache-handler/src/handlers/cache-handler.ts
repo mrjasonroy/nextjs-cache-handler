@@ -590,9 +590,12 @@ export class CacheHandler implements NextCacheHandler {
           }
         });
       },
-      async revalidateTag(tag) {
+      async revalidateTag(
+        tag: string,
+        durations?: CacheHandlerParametersRevalidateTag[1],
+      ) {
         const operationsResults = await Promise.allSettled(
-          handlersList.map((handler) => handler.revalidateTag(tag)),
+          handlersList.map((handler) => handler.revalidateTag(tag, durations)),
         );
 
         if (!CacheHandler.#debug) {
@@ -780,6 +783,7 @@ export class CacheHandler implements NextCacheHandler {
 
   async revalidateTag(
     tag: CacheHandlerParametersRevalidateTag[0],
+    durations?: CacheHandlerParametersRevalidateTag[1],
   ): Promise<void> {
     await CacheHandler.#configureCacheHandler();
 
@@ -795,7 +799,7 @@ export class CacheHandler implements NextCacheHandler {
     }
 
     for (const tag of tags) {
-      await CacheHandler.#mergedHandler.revalidateTag(tag);
+      await CacheHandler.#mergedHandler.revalidateTag(tag, durations);
     }
   }
 

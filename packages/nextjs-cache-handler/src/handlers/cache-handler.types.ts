@@ -144,8 +144,12 @@ export type Handler = {
    *
    * @param tag - A string representing the cache tag associated with the data you want to revalidate.
    * Must be less than or equal to 256 characters. This value is case-sensitive.
+   * @param durations - Optional durations object with expire time
    */
-  revalidateTag: (tag: string) => Promise<void>;
+  revalidateTag: (
+    tag: string,
+    durations?: { expire?: number },
+  ) => Promise<void>;
   /**
    * Deletes the cache entry associated with the given key from the cache store.
    * This method is optional and supposed to be used only when the cache store does not support time based key eviction.
@@ -316,7 +320,10 @@ declare class CacheHandler implements NextCacheHandler {
       internal_lastModified?: number;
     },
   ): Promise<void>;
-  revalidateTag(tag: CacheHandlerParametersRevalidateTag[0]): Promise<void>;
+  revalidateTag(
+    tag: CacheHandlerParametersRevalidateTag[0],
+    durations?: CacheHandlerParametersRevalidateTag[1],
+  ): Promise<void>;
   resetRequestCache(): void;
 }
 export type CacheHandlerParametersSet = Parameters<NextCacheHandler["set"]>;

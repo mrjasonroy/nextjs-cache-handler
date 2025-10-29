@@ -1,10 +1,10 @@
+"use cache";
+
 interface Post {
   id: string;
   title: string;
   content: string;
 }
-
-export const revalidate = 3600;
 
 export async function generateStaticParams() {
   const posts: Post[] = await fetch("https://api.vercel.app/blog").then((res) =>

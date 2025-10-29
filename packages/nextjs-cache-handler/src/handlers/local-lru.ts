@@ -104,7 +104,7 @@ export default function createHandler({
 
       return Promise.resolve();
     },
-    revalidateTag(tag) {
+    revalidateTag(tag, durations) {
       // Iterate over all entries in the cache
       for (const [key, { tags }] of lruCacheStore.entries()) {
         // If the value's tags include the specified tag, delete this entry

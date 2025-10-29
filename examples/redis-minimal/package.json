@@ -10,23 +10,27 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed"
   },
   "dependencies": {
-    "@fortedigital/nextjs-cache-handler": "^2.1.6",
-    "next": "^15.5.6",
+    "@fortedigital/nextjs-cache-handler": "file:../../packages/nextjs-cache-handler",
+    "next": "^16.0.1",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "redis": "^5.9.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@playwright/test": "^1.56.1",
     "@tailwindcss/postcss": "^4",
     "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.5.6",
+    "eslint-config-next": "16.0.1",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

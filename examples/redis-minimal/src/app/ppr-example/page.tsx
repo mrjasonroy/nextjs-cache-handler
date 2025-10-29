@@ -1,3 +1,5 @@
+"use cache";
+
 import { Suspense } from "react";
 import { Example, Skeleton } from "./Example";
 
@@ -17,7 +19,3 @@ export default function Page({
     </section>
   );
 }
-
-export const experimental_ppr = true;
-
-export const revalidate = 3600;

@@ -1,3 +1,5 @@
+"use cache";
+
 export default async function Home() {
   return (
     <div>
@@ -5,5 +7,3 @@ export default async function Home() {
     </div>
   );
 }
-
-export const revalidate = 3600;

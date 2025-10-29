@@ -284,7 +284,7 @@ export default function createHandler({
 
       await Promise.all([setOperation, expireOperation]);
     },
-    async revalidateTag(tag) {
+    async revalidateTag(tag, durations) {
       assertClientIsReady();
 
       /*
