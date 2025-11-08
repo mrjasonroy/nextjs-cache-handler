@@ -1,32 +1,59 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next.js 16 Cache Handler - Examples
+
+This example application demonstrates comprehensive caching strategies using `@fortedigital/nextjs-cache-handler` with Next.js 16.
+
+## Features
+
+This example showcases:
+
+- ✅ **Fetch Caching** - HTTP fetch with tags and time-based revalidation
+- ✅ **ISR** (Incremental Static Regeneration) - Dynamic routes with caching
+- ✅ **TTL/Expiration** - Time-to-live and cache expiration behavior
+- ✅ **Tag Revalidation** - On-demand revalidation by cache tags
+- ✅ **Path Revalidation** - On-demand revalidation by route paths
+- ✅ **"use cache" Directive** - Next.js 16's component-level caching
+- ✅ **PPR** (Partial Prerendering) - Mixed static/dynamic content
+- ✅ **Static Params** - `generateStaticParams` with caching
+- ✅ **Comprehensive Tests** - Playwright e2e tests for all features
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
-```bash
-npm i
+- Node.js 22+
+- Redis server (optional, falls back to LRU)
+
+### Installation
+
+\`\`\`bash
+npm install
+\`\`\`
+
+### Running the Development Server
+
+\`\`\`bash
 npm run dev
-```
+\`\`\`
 
-Or run build and run production server:
+Open [http://localhost:3000](http://localhost:3000) to see the examples.
 
-```bash
-npm i
-npm run build
-npm run start
-```
+### Running Tests
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+\`\`\`bash
+# Run all e2e tests
+npm run test:e2e
 
-Modify `.env` file if you need to.
+# Run tests in UI mode
+npm run test:e2e:ui
 
-## Examples
+# Run tests in headed mode (see browser)
+npm run test:e2e:headed
+\`\`\`
 
-- http://localhost:3000
-- http://localhost:3000/fetch-example
-- http://localhost:3000/static-params-test/cache
+## Learn More
 
-## Clear fetch example cache
+- [Next.js 16 Documentation](https://nextjs.org/docs)
+- [@fortedigital/nextjs-cache-handler](https://github.com/fortedigital/nextjs-cache-handler)
+- [Playwright Testing](https://playwright.dev/)
 
-- http://localhost:3000/api/cache
+See EXAMPLES_TODO.md for implementation checklist.
