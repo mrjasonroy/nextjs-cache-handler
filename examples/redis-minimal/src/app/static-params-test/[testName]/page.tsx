@@ -1,8 +1,8 @@
+"use cache";
+
 import React from "react";
 
 export const dynamicParams = true;
-
-export const revalidate = 5;
 
 export default async function TestPage({
   params,

@@ -3,7 +3,13 @@
 # @fortedigital/nextjs-cache-handler
 
 A caching utility built originally on top of [`@neshca/cache-handler`](https://www.npmjs.com/package/@neshca/cache-handler), providing additional cache handlers for specialized use cases with a focus on Redis-based caching.
-Starting from version `2.0.0`, this package no longer depends on `@neshca/cache-handler` and is fully maintained and compatible with Next.js 15 and onwards.
+
+**Version compatibility:**
+- Version `3.x.x`: Next.js 16+ (with "use cache" and cacheComponents support)
+- Version `2.x.x`: Next.js 15+ (legacy)
+- Version `1.x.x`: Next.js 14 and earlier (deprecated)
+
+Starting from version `2.0.0`, this package no longer depends on `@neshca/cache-handler` and is fully maintained independently.
 
 ## Documentation
 
@@ -11,23 +17,68 @@ The documentation at [@neshca/cache-handler - caching-tools.github.io/next-share
 
 ## Migration
 
+- [2.x.x → ^3.x.x (Next.js 16)](#nextjs-16-migration)
 - [1.x.x → ^2.x.x](https://github.com/fortedigital/nextjs-cache-handler/blob/master/docs/migration/1_x_x__2_x_x.md)
 - [1.2.x -> ^1.3.x](https://github.com/fortedigital/nextjs-cache-handler/blob/master/docs/migration/1_2_x__1_3_x.md)
+
+### Next.js 16 Migration
+
+Version 3.0.0 adds full support for Next.js 16 with the following key changes:
+
+**Breaking Changes:**
+- Requires Next.js 16.0.0 or later
+- The cache handler API now supports the optional `durations` parameter in `revalidateTag(tag, durations?)`
+
+**App Router Changes:**
+When using `cacheComponents: true` in Next.js 16, you must replace `export const revalidate` with the `"use cache"` directive:
+
+```tsx
+// ❌ Old (Next.js 15 / incompatible with cacheComponents)
+export const revalidate = 3600;
+export default async function Page() {
+  return <div>{new Date().toISOString()}</div>;
+}
+
+// ✅ New (Next.js 16)
+"use cache";
+export default async function Page() {
+  return <div>{new Date().toISOString()}</div>;
+}
+```
+
+**Important Notes:**
+- The custom `cacheHandler` continues to work for ISR, fetch caching, and route handlers
+- The new "use cache" directive is managed separately by Next.js and does not use the custom cache handler
+- Pages Router (`getStaticProps` with `revalidate`) continues to work unchanged
+- Flush your Redis cache when upgrading from Next.js 15 to Next.js 16
 
 ## Installation
 
 `npm i @fortedigital/nextjs-cache-handler`
 
-If upgrading from Next 14 or earlier, **flush your Redis cache** before running new version of the application locally and on your hosted environments. **Cache formats between Next 14 and 15 are incompatible**.
+If upgrading from Next 14 or earlier, **flush your Redis cache** before running new version of the application locally and on your hosted environments. **Cache formats between Next.js versions may be incompatible**.
 
-## Next 15 Support
+## Next.js 16 Support
 
-The original `@neshca/cache-handler` package does not support Next.js 15.
+Version 3.0.0 provides full support for Next.js 16, including:
+- ✅ Cache Components and `"use cache"` directive
+- ✅ Updated `revalidateTag` API with optional durations parameter
+- ✅ Turbopack compatibility
+- ✅ Async request APIs (`params`, `searchParams`)
+- ✅ ISR and fetch caching (traditional cache handler)
+- ✅ Playwright e2e tests for caching behavior
 
-Prior to 2.0.0, this package provided wrappers and enhancements to allow using `@neshca/cache-handler` with Next.js 15.  
-From version 2.0.0 onward, `@fortedigital/nextjs-cache-handler` is a standalone solution with no dependency on `@neshca/cache-handler` and is fully compatible with Next.js 15 and [redis 5](https://www.npmjs.com/package/redis).
+**Configuration for Next.js 16:**
+```ts
+// next.config.ts
+const nextConfig = {
+  cacheHandler: require.resolve('./cache-handler.mjs'),
+  cacheMaxMemorySize: 0,
+  cacheComponents: true, // Enable Cache Components
+};
+```
 
-We aim to keep up with new Next.js releases and will introduce major changes with appropriate version bumps.
+We aim to keep the package version in sync with major Next.js releases and will introduce breaking changes with appropriate version bumps.
 
 ### Swapping from `@neshca/cache-handler`
 
