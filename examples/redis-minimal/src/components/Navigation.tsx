@@ -11,6 +11,7 @@ export function Navigation() {
     { href: "/revalidate-path", label: "Path Revalidation" },
     { href: "/use-cache-demo", label: "Use Cache Directive" },
     { href: "/ppr-example", label: "PPR Example" },
+    { href: "/cache-debug", label: "🔧 Debug Console" },
   ];
 
   return (

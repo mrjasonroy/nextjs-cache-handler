@@ -345,4 +345,104 @@ test.describe("Next.js 16 Cache Handler - Comprehensive Tests", () => {
       expect(loadTime).toBeLessThan(2000);
     });
   });
+
+  test.describe("Cache Debug Console", () => {
+    test("should load cache debug page", async ({ page }) => {
+      await page.goto("/cache-debug");
+
+      await expect(page.locator("h1")).toContainText("Cache Debug Console");
+      await expect(page.getByText("Debugging tools for inspecting cache behavior")).toBeVisible();
+    });
+
+    test("should have cache inspector with action selector", async ({ page }) => {
+      await page.goto("/cache-debug");
+
+      // Should have action selector
+      await expect(page.getByText("Select Action:")).toBeVisible();
+      const select = page.locator("select");
+      await expect(select).toBeVisible();
+
+      // Should have inspect button
+      await expect(page.getByRole("button", { name: /Inspect Cache/i })).toBeVisible();
+    });
+
+    test("should fetch cache status via API", async ({ page }) => {
+      await page.goto("/cache-debug");
+
+      // Select status action
+      await page.locator("select").selectOption("status");
+
+      // Click inspect button
+      await page.getByRole("button", { name: /Inspect Cache/i }).click();
+
+      // Wait for debug info to appear
+      await expect(page.getByText("Debug Information:")).toBeVisible();
+
+      // Should show some debug data
+      const debugOutput = page.locator("pre");
+      await expect(debugOutput).toBeVisible();
+    });
+
+    test("should display tag persistence testing instructions", async ({ page }) => {
+      await page.goto("/cache-debug");
+
+      await expect(page.getByText("Tag Persistence Testing")).toBeVisible();
+      await expect(page.getByText("Test Flow:")).toBeVisible();
+
+      // Should have links to test pages
+      await expect(page.getByRole("link", { name: /Fetch Cache page/i })).toBeVisible();
+      await expect(page.getByText('Revalidate "futurama" tag')).toBeVisible();
+    });
+
+    test("should display Redis CLI commands", async ({ page }) => {
+      await page.goto("/cache-debug");
+
+      await expect(page.getByText("Redis CLI Commands")).toBeVisible();
+
+      // Should show various Redis commands
+      await expect(page.getByText('redis-cli KEYS "nextjs:*"')).toBeVisible();
+      await expect(page.getByText("redis-cli HGETALL nextjs:__sharedTags__")).toBeVisible();
+      await expect(page.getByText("redis-cli monitor")).toBeVisible();
+    });
+
+    test("should have quick links to testing pages", async ({ page }) => {
+      await page.goto("/cache-debug");
+
+      await expect(page.getByText("Quick Links")).toBeVisible();
+
+      // Should have links to example pages
+      const fetchCacheLink = page.getByRole("link", { name: /Fetch Cache Example/i });
+      await expect(fetchCacheLink).toBeVisible();
+
+      // Test one of the links works
+      await fetchCacheLink.click();
+      await expect(page).toHaveURL("/fetch-cache");
+    });
+
+    test("cache debug API should return status", async ({ page }) => {
+      const response = await page.request.get("/api/cache-debug?action=status");
+      expect(response.ok()).toBeTruthy();
+
+      const data = await response.json();
+      expect(data).toHaveProperty("timestamp");
+      expect(data).toHaveProperty("action", "status");
+      expect(data).toHaveProperty("environment");
+    });
+
+    test("cache debug API should return environment info", async ({ page }) => {
+      const response = await page.request.get("/api/cache-debug?action=env");
+      expect(response.ok()).toBeTruthy();
+
+      const data = await response.json();
+      expect(data).toHaveProperty("environment");
+      expect(data.environment).toHaveProperty("NODE_ENV");
+    });
+
+    test("should show known issue warning from PR #109", async ({ page }) => {
+      await page.goto("/cache-debug");
+
+      await expect(page.getByText("Known Issue (PR #109):")).toBeVisible();
+      await expect(page.getByText("Tags may not persist in development mode")).toBeVisible();
+    });
+  });
 });
