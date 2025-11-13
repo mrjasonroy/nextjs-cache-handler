@@ -31,6 +31,10 @@
       "require": "./dist/handlers/*.cjs",
       "import": "./dist/handlers/*.js"
     },
+    "./functions": {
+      "require": "./dist/functions/functions.cjs",
+      "import": "./dist/functions/functions.js"
+    },
     "./instrumentation": {
       "require": "./dist/instrumentation/instrumentation.cjs",
       "import": "./dist/instrumentation/instrumentation.js"
@@ -52,6 +56,9 @@
     "*": {
       "*": [
         "dist/handlers/cache-handler.d.ts"
+      ],
+      "functions": [
+        "dist/functions/functions.d.ts"
       ],
       "instrumentation": [
         "dist/instrumentation/instrumentation.d.ts"
