@@ -3,8 +3,9 @@
 version: 2
 updates:
   - package-ecosystem: "npm"
-    directories:
-      - "/examples/redis-minimal"
+    # Use root directory for pnpm monorepo - the pnpm-lock.yaml is at the root
+    # and Dependabot needs to update it when modifying any workspace package
+    directory: "/"
     schedule:
       interval: "monthly"
     ignore:
